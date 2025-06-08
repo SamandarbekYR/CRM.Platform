@@ -19,14 +19,12 @@ public interface IBaseEntityRepository<TId, TEntity> : IStatusGenericHandler, IS
     IQueryable<TDto> ReadAsNoTracked<TDto>() where TDto : class;
 
     IQueryable<TDto> ReadAsNoTracked<TDto>(Expression<Func<TEntity, bool>> predicate) where TDto : class;
-    TEntity GetById(TId id);
 
-    TDto GetById<TDto>(TId id) where TDto : class;
     TEntity ById(TId id);
 
     TDto ById<TDto>(TId id) where TDto : class;
 
-    TEntity Delete(TId id);
+    Task<TEntity> DeleteAsync(TId id);
 
     TEntity DeleteOrg(TId id);
 }

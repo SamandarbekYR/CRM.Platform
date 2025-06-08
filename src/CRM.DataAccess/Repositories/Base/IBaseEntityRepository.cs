@@ -14,9 +14,8 @@ public interface IBaseEntityRepository<TId, TEntity, TCreateDto, TUpdateDto> :
                  IStatusGeneric where TEntity : class, ISoftDeletable,
                  IHaveId<TId> where TCreateDto : EntityDto<TCreateDto, TEntity> where TUpdateDto : EntityDto<TUpdateDto, TEntity>, IHaveId<TId>
 {
-    TEntity Create(TCreateDto createDto);
+    Task<TEntity> CreateAsync(TCreateDto createDto);
     TEntity Update(TUpdateDto updateDto);
     TEntity Update(TEntity entity);
-    TEntity Create(TEntity entity);
+    Task<TEntity> CreateAsync(TEntity entity);
 }
-

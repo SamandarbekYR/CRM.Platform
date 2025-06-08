@@ -10,6 +10,7 @@ namespace CRM.DataAccess.EfClass
         public DateTime ExpiredDate { get; set; }
         public bool IsActive { get; set; } = true;
         public string ProductName { get; set; } = string.Empty;
+        public string ProductPrice { get; set; } = string.Empty;
         [ForeignKey("PartnerId")]
         [InverseProperty(nameof(Partner.Licenses))]
         public virtual Partner Partner { get; set; } = null!; 

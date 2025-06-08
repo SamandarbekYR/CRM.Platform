@@ -1,4 +1,5 @@
-﻿using CRM.DataAccess.EfClass;
+﻿using AutoMapper.Configuration.Annotations;
+using CRM.DataAccess.EfClass;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRM.DataAccess.EfCode;
@@ -19,4 +20,7 @@ public class AppDbContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
+    public DbSet<License> Licenses { get; set; } = null!;
+    public DbSet<TrustedClient> TrustedClients { get; set; } = null!;
+    public DbSet<Partner> Partners { get; set; } = null!;
 }
