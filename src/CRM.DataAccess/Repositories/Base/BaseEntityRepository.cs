@@ -23,7 +23,7 @@ public class BaseEntityRepository<TId, TEntity, TCreateDto, TUpdateDto> :
 {
     public BaseEntityRepository(ICrudServices crudServices) : base(crudServices) { }
 
-    public virtual TEntity Create(TCreateDto createDto)
+    public virtual async Task<TEntity> CreateAsync(TCreateDto createDto)
     {
         CreateValidate(createDto);
         Validate(null!, createDto, null);
@@ -31,13 +31,15 @@ public class BaseEntityRepository<TId, TEntity, TCreateDto, TUpdateDto> :
 
         var entity = createDto.CreateEntity();
         base.Context.Entry(entity).State = EntityState.Added;
-        base.DbSet.Add(entity);
+        await base.DbSet.AddAsync(entity);
+
         return entity;
     }
-    public virtual TEntity Create(TEntity entity)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
         base.Context.Entry(entity).State = EntityState.Added;
-        base.DbSet.Add(entity);
+        await base.DbSet.AddAsync(entity);
+
         return entity;
     }
     public virtual TEntity Update(TUpdateDto updateDto)

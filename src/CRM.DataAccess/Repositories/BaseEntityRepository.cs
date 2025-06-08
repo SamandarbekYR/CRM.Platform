@@ -38,28 +38,6 @@ public class BaseEntityRepository<TId, TEntity> : StatusGenericHandler, IBaseEnt
             return query.Where(predicate);
         });
     }
-
-    public virtual TEntity GetById(TId id)
-    {
-        TEntity? val = ByIdQuery().FirstOrDefault((TEntity a) => a.Id.Equals(id) && !a.IsDeleted);
-        if (val == null)
-        {
-            AddEntityNotFoundError();
-        }
-
-        return val;
-    }
-
-    public virtual TDto GetById<TDto>(TId id) where TDto : class
-    {
-        TDto? val = ReadAsNoTracked<TDto>((TEntity a) => a.Id.Equals(id) && !a.IsDeleted).FirstOrDefault();
-        if (val == null)
-        {
-            AddEntityNotFoundError();
-        }
-
-        return val;
-    }
     public virtual TEntity ById(TId id)
     {
         TEntity? val = ByIdQuery().FirstOrDefault((TEntity a) => a.Id.Equals(id) && !a.IsDeleted);
@@ -97,9 +75,9 @@ public class BaseEntityRepository<TId, TEntity> : StatusGenericHandler, IBaseEnt
         return AllAsQueryable;
     }
 
-    public virtual TEntity Delete(TId id)
+    public async Task<TEntity> DeleteAsync(TId id)
     {
-        TEntity val = GetById(id);
+        TEntity val = ById(id);
 
         if (val == null)
         {
@@ -122,12 +100,12 @@ public class BaseEntityRepository<TId, TEntity> : StatusGenericHandler, IBaseEnt
         model.Property("IsDeleted").CurrentValue = true;
         model.State = EntityState.Modified;
 
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
         return val;
     }
     public virtual TEntity DeleteOrg(TId id)
     {
-        TEntity val = GetById(id);
+        TEntity val = ById(id);
 
         if (val == null)
         {
